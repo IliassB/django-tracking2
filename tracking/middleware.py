@@ -3,6 +3,7 @@ import logging
 import warnings
 
 import django
+from django.apps import apps as django_apps
 from django.db import IntegrityError, transaction
 from django.utils import timezone
 from django.utils.encoding import smart_text
@@ -23,6 +24,8 @@ from tracking.settings import (
     TRACK_QUERY_STRING,
     TRACK_REFERER,
     TRACK_SUPERUSERS,
+    TRACK_TOKEN_MODEL,
+    TRACK_TOKEN_IDENTIFIER,
 )
 
 track_ignore_urls = [re.compile(x) for x in TRACK_IGNORE_URLS]
@@ -151,6 +154,15 @@ class VisitorTrackingMiddleware(MiddlewareMixin):
         if user and is_anonymous(user):
             # set AnonymousUsers to None for simplicity
             user = None
+        # Token support
+        if TRACK_TOKEN_MODEL:
+            try:
+                token = re.sub(TRACK_TOKEN_IDENTIFIER, '', request.META.get('HTTP_AUTHORIZATION', None)).strip()
+                Token = django_apps.get_model(TRACK_TOKEN_MODEL, require_ready=False)
+                user = Token.objects.get(key=token).user
+            except:
+                pass
+        # End Token support
 
         # make sure this is a response we want to track
         if not self._should_track(user, request, response):

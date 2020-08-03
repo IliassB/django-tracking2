@@ -98,6 +98,10 @@ TRACK_IGNORE_STATUS_CODES = [400, 404, 403, 405, 410, 500]
 
 `TRACK_QUERY_STRING` - If True, query string for all pageviews will be tracked.  Default is False
 
+`TRACK_TOKEN_MODEL` - The name of the model containing the tokens, should be written as ```app.Model```. Default is None 
+
+`TRACK_TOKEN_IDENTIFIER` - The name of the Token identifier inside the request. Default is 'Token'
+
 Views
 -----
 To view aggregate data about all visitors and per-registered user stats,

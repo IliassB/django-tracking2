@@ -21,3 +21,6 @@ if hasattr(settings, 'TRACKING_USE_GEOIP'):
 TRACK_REFERER = getattr(settings, 'TRACK_REFERER', False)
 
 TRACK_QUERY_STRING = getattr(settings, 'TRACK_QUERY_STRING', False)
+
+TRACK_TOKEN_MODEL = getattr(settings, 'TRACK_TOKEN_MODEL', None)
+TRACK_TOKEN_IDENTIFIER = getattr(settings, 'TRACK_TOKEN_IDENTIFIER', 'Token')
